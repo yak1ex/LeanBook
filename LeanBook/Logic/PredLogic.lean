@@ -22,7 +22,7 @@ example (P : Nat → Prop) (h : ∀ x : Nat, P x) : P 0 := by
 def Even (n : Nat) : Prop := ∃ m : Nat, n = m + m
 
 /-- 4: Nat は偶数 -/
-example : even 4 := by
+example : Even 4 := by
   exists 2
 
 example (α : Type) (P Q : α → Prop) (h : ∃ x : α, P x ∧ Q x)
