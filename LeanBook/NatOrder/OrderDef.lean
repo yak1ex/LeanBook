@@ -78,3 +78,43 @@ theorem MyNat.le_add_one_left (n : MyNat) : n ≤ 1 + n := calc
   _ = 1 + n := by ac_rfl
 
 attribute [simp] MyNat.le_refl MyNat.le_add_one_right MyNat.le_add_one_left
+
+/- 6.2.4 順序関係を和の等式に書き換える -/
+
+/-- a ≤ b から和の等式を導く -/
+theorem MyNat.le.dest (h : n ≤ m) : ∃ k, n + k = m := by
+  induction h with
+  | refl => exists 0
+  | @step l h ih =>
+    obtain ⟨k, ih⟩ := ih
+    exists k + 1
+    rw [← ih]
+    ac_rfl
+
+theorem MyNat.le_add_right (n m : MyNat) : n ≤ n + m := by
+  induction m with
+  | zero => /- rfl -/ simp
+  | succ k ih =>
+    rw [show n + (k + 1) = (n + k) + 1 from by ac_rfl]
+    exact MyNat.le_step ih
+
+/-- 和の等式から a ≤ b を導く -/
+theorem MyNat.le.intro (h : n + k = m) : n ≤ m := by
+  rw [← h]
+  induction k with
+  | zero => /- rfl -/ simp
+  | succ k ih =>
+    apply MyNat.le_add_right
+
+/-- 順序関係 n ≤ m を足し算で書き換える -/
+theorem MyNat.le_iff_add : n ≤ m ↔ ∃ k, n + k = m := by
+  constructor <;> intro h
+  · exact MyNat.le.dest h
+  · obtain ⟨k, hk⟩ := h
+    exact MyNat.le.intro hk
+
+/-- 6.2.5 練習問題 -/
+example : 1 ≤ 4 := by
+  calc
+    _ ≤ 1 + 3 := by apply MyNat.le_add_right
+    _ = 4 := by rfl
