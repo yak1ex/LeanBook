@@ -84,11 +84,15 @@ instance : LE MyInt where
 theorem MyInt.le_def (m n : MyInt) : m ≤ n ↔ ∃ k : MyNat, m + ↑ k = n := by
   rfl
 
-def MyInt.lt (m n : MyInt) : Prop := m ≤ n ∧ ¬ n ≤ m
+def MyInt.lt (m n : MyInt) : Prop :=
+  m ≤ n ∧ ¬ n ≤ m
 
-instance : LT MyInt := ⟨MyInt.lt⟩
+instance : LT MyInt where
+  lt := MyInt.lt
 
-@[notation_simp] theorem MyInt.lt_def (m n : MyInt) : m < n ↔ m ≤ n ∧ ¬ n ≤ m := by
+-- 後で使いたいので記法も登録しておく
+@[notation_simp]
+theorem MyInt.lt_def (a b : MyInt) : a < b ↔ a ≤ b ∧ ¬ b ≤ a := by
   rfl
 
 /- 8.5.3 前順序であることを確かめて再利用可能にする -/
@@ -119,6 +123,9 @@ theorem MyInt.le_trans {m n k : MyInt} (hnm : n ≤ m) (hmk : m ≤ k) : n ≤ k
     _ = m + ↑ b := by rw[ha]
     _ = k := by rw[hb]
   assumption
+
+instance : Trans (· ≤ · : MyInt → MyInt → Prop) (· ≤ ·) (· ≤ ·) where
+  trans := MyInt.le_trans
 
 /- 前順序であることを再利用可能にする -/
 instance : Preorder MyInt where

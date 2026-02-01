@@ -85,7 +85,7 @@ theorem MyInt.lt_iff_add : a < b ↔ ∃ k : MyNat, a + (k + 1) = b := by
 
 @[push_cast]
 theorem MyInt.ofMyNat_mul (m n : MyNat)
-  : ↑ (m + n) = (m : MyInt) + (n : MyInt) := by
+  : ↑ (m * n) = (m : MyInt) * (n : MyInt) := by
   dsimp [MyInt.ofMyNat]
   apply Quotient.sound
   notation_simp
@@ -98,11 +98,8 @@ theorem MyInt.mul_pos (ha : 0 < a) (hb : 0 < b) : 0 < a * b := by
   obtain ⟨d, hd⟩ := hb
   rw [← hc, ← hd]
   use c * d + c + d
-  push_cast -- push_cast 関連が何か足りない？
+  push_cast
   ring
-  sorry
-
-#synth CommRing MyInt
 
 /- 掛け算が狭義順序を保つことを示す -/
 
