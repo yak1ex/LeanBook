@@ -84,6 +84,13 @@ instance : LE MyInt where
 theorem MyInt.le_def (m n : MyInt) : m ≤ n ↔ ∃ k : MyNat, m + ↑ k = n := by
   rfl
 
+def MyInt.lt (m n : MyInt) : Prop := m ≤ n ∧ ¬ n ≤ m
+
+instance : LT MyInt := ⟨MyInt.lt⟩
+
+@[notation_simp] theorem MyInt.lt_def (m n : MyInt) : m < n ↔ m ≤ n ∧ ¬ n ≤ m := by
+  rfl
+
 /- 8.5.3 前順序であることを確かめて再利用可能にする -/
 
 /- 反射律 -/

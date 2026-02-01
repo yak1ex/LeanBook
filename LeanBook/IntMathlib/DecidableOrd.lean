@@ -114,7 +114,7 @@ example : (3 : MyInt) ≤ 4 := by
 
 instance : DecidableLT MyInt := by
   intro n m
-  dsimp [(· < ·)] -- MyInt.lt 入れるとエラーになる
+  dsimp [(· < ·), MyInt.lt]
   infer_instance
 
 #eval (3 : MyInt) < 4
